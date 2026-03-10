@@ -1,0 +1,94 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final userController = TextEditingController();
+  final passController = TextEditingController();
+
+  // Predefined username & password
+  String correctUser = "naveena";
+  String correctPass = "1234";
+
+  void showSnackBar(String msg, {Color? color}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: color ?? Colors.red,
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void loginCheck() {
+    String user = userController.text;
+    String pass = passController.text;
+
+    if (user.isEmpty && pass.isEmpty) {
+      showSnackBar("Enter Username and Password");
+    } else if (user.isEmpty) {
+      showSnackBar("Enter Username");
+    } else if (pass.isEmpty) {
+      showSnackBar("Enter Password");
+    } else if (user == correctUser && pass == correctPass) {
+      showSnackBar(
+        "Login Successful\nUsername: $user\nPassword: $pass",
+        color: Colors.green,
+      );
+    } else {
+      showSnackBar("Login Failed");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Login")),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextField(
+              controller: userController,
+              decoration: InputDecoration(
+                labelText: "Username",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: passController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: "Password",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: loginCheck,
+              child: Text("Login"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
